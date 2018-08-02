@@ -1,0 +1,44 @@
+{
+  "name": "riddl-js",
+  "version": "1.0.0",
+  "description": "Lightweight ReactJS state management library",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "babel lib -d build",
+    "lint": "eslint lib/**; exit 0",
+    "lint:watch": "esw -w lib/**",
+    "build:watch": "babel lib -w -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbgrabbag/riddle-js.git"
+  },
+  "keywords": [
+    "ReactJS",
+    "state-management",
+    "library"
+  ],
+  "author": "Ben Turner <bbgrabbag@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bbgrabbag/riddl-js/issues"
+  },
+  "homepage": "https://github.com/bbgrabbag/riddl-js#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.19.1",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.10.0",
+    "eslint-watch": "^4.0.2",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  }
+}
