@@ -98,12 +98,21 @@ componentDidMount(){
 **Riddl**'s `connect` function is inspired from `react-redux`. However it has been slightly condensed. By default the entire `globalState` is provided via props. `mapStateToProps` is an optional second parameter, which lets you extract a specific portion of the global state you need:
 
 ```javascript
+//globalState --> {portion: {foo: "bar"}, rest: {}}
+
+const NeedsPartOfState = props => (
+    <div>
+        {props.foo}
+    </div>
+)
+
 export default connect(MyComponent, state => state.portion);
 ```
 
 The third parameter (also optional) is a special object reserved for what are called *transmitters*. 
 
 ```javascript
+    //...
     export default connect(MyComponent, null, {
         transmitter1, 
         transmitter2, 
@@ -114,15 +123,20 @@ The third parameter (also optional) is a special object reserved for what are ca
 **Riddl** transmitters are simply functions that return callbacks with `setGlobalState` as a parameter. They are based on the `redux-thunk` design of using `dispatch` within asynchronous action creators:
 
 ```javascript
-const coinflip = guess => setGlobalState => new Promise((res, rej)=>{
-    setGlobalState({result: "Flipping!!"});
-    let result = Math.random() < .5 ? "HEADS" : "TAILS";
-    setTimeout(()=> result === guess ? res("YOU WON!") : rej("YOU LOST!"), 1200);
-})
-.then(victory => setGlobalState({result:victory}))
-.catch(defeat => setGlobalState({result:defeat}))
+// transmitters.js
+export const coinflip = guess => setGlobalState => (
+        new Promise((res, rej)=>{
+        setGlobalState({result: "Flipping!!"});
+        let result = Math.random() < .5 ? "HEADS" : "TAILS";
+        setTimeout(()=> result === guess ? res("YOU WON!") : rej("YOU LOST!"), 1200);
+    })
+    .then(victory => setGlobalState({result:victory}))
+    .catch(defeat => setGlobalState({result:defeat}))
+)
 ```
 ```javascript
+import {coinFlip} from "transmitters.js";
+
 const Game = props => (
     <div>
         <button onClick={()=>props.coinflip("HEADS")}>Click to flip</button>
@@ -139,8 +153,47 @@ export default connect(Score);
 ```
 Notice in the example that the transmitter `coinflip` is called from `props`. This is because the `connect` function is responsible for providing transmitters `setGlobalState` before they are attached to props.
 
-Use transmitters for cleaning up your component code or when you are managing particularly messy state changes.
+#### Organization
+It is easiest to store your transmitters in a separate file and export them as needed. By design Riddl doesn't require a strict folder structure, but here is a simple example:
+```
+/src
+    /components
+    App.js
+    index.js
+    /transmitters
+        index.js
+```
+If you are finding yourself with lots of transmitters and a large state, consider breaking them up into separate files:
 
+```javascript
+// /transmitters/auth.js
+
+ export const login = credentials => setGlobalState => {
+     //...
+ }
+ export const logout = () => setGlobalState => {
+     //...
+ }
+
+ export default {
+     isAuthenticated: false,
+     user: null
+ }
+```
+```javascript
+// /src/index.js
+import auth from "./transmitters/auth.js";
+import data from "./transmitters/data.js";
+
+const globalState = {auth, data};
+
+render(
+    <Provider globalState={globalState} >
+        <App />
+    </Provider>,
+    document.getElementById("root");
+    )
+```
 ---
 
 ## API Reference
