@@ -9,7 +9,7 @@
 **Riddl.js** is a ReactJS mini-library for intuitively managing global state. It consists of four very simple parts: `globalState`, `setGlobalState`, `connect` and `Provider`.
 
 * `globalState` is an object representing the state of your application.
-* `setGlobalState` is the declrative function for defining new states.
+* `setGlobalState` is the declarative function for defining new states.
 * `connect` is a HoC which lets individual components communicate with the global state
 * `Provider` is a wrapper component which houses the single source of truth (the global state) for your application;
 ---
@@ -137,7 +137,9 @@ const Score = props => (
 
 export default connect(Score);
 ```
-Transmitters are especially useful for cleaning up your component code when you are managing particularly messy state changes.
+Notice in the example that the transmitter `coinflip` is called from `props`. This is because the `connect` function is responsible for providing transmitters `setGlobalState` before they are attached to props.
+
+Use transmitters for cleaning up your component code or when you are managing particularly messy state changes.
 
 ---
 
