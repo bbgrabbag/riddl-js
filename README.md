@@ -106,7 +106,7 @@ const NeedsPartOfState = props => (
     </div>
 )
 
-export default connect(MyComponent, state => state.portion);
+export default connect(NeedsPartOfState, state => state.portion);
 ```
 
 The third parameter (also optional) is a special object reserved for what are called *transmitters*. 

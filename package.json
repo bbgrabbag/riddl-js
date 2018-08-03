@@ -1,6 +1,6 @@
 {
   "name": "riddl-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Lightweight ReactJS state management library",
   "main": "build/index.js",
   "scripts": {
